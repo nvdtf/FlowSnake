@@ -5,10 +5,34 @@
 		"sandboxnet": "access.sandboxnet.nodes.onflow.org:9000",
 		"testnet": "access.devnet.nodes.onflow.org:9000"
 	},
+	"contracts": {
+		"FlowSnake": "./contracts/FlowSnake.cdc",
+		"SimpleSnake": "./contracts/SimpleSnake.cdc",
+		"SimpleBoard": "./contracts/SimpleBoard.cdc"
+	},
 	"accounts": {
 		"emulator-account": {
 			"address": "f8d6e0586b0a20c7",
 			"key": "2540511dea3f3c32306837f333180f240f318120d6d14e4305dfff452e23e3fc"
+		},
+		"emulator-flowsnake": {
+			"address": "01cf0e2f2f715450",
+			"key": "b35cd93de7d0eef6b2c23ef6e6f0b2432d20ab72691e3171258e9e8e14251dd0"
+		},
+		"emulator-gamer": {
+			"address": "179b6b1cb6755e31",
+			"key": "b35cd93de7d0eef6b2c23ef6e6f0b2432d20ab72691e3171258e9e8e14251dd0"
+		}
+	},
+	"deployments": {
+		"emulator" : {
+			"emulator-account": [],
+			"emulator-flowsnake": [
+				"SimpleSnake",
+				"SimpleBoard",
+				"FlowSnake"
+			],
+			"emulator-gamer": []
 		}
 	}
 }
