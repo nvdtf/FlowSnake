@@ -2,6 +2,8 @@ import SimpleBoard from "./SimpleBoard.cdc"
 
 pub contract SimpleSnake {
 
+    pub event Log(what: String)
+
     pub resource Snake {
 
         init() {
@@ -23,6 +25,9 @@ pub contract SimpleSnake {
                 let d = self.calculateDistance(a: myHead, b: fruit)
                 if d < minDistance {
                     targetCell = fruit
+
+                    emit Log(what: targetCell.X.toString())
+                    emit Log(what: targetCell.Y.toString())
                     minDistance = d
                 }
             }

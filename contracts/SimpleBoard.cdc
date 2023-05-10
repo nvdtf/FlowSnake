@@ -106,6 +106,12 @@ pub contract SimpleBoard {
                 i = i + 1
             }
 
+            var f = 0
+            while (f < self.fruits.length) {
+                board[self.fruits[f].X][self.fruits[f].Y] = 4
+                f = f + 1
+            }
+
             var k = 0
             while (k < self.players.length) {
                 board[self.players[k].headPos.X][self.players[k].headPos.Y] = 3
@@ -115,12 +121,6 @@ pub contract SimpleBoard {
                     m = m + 1
                 }
                 k = k + 1
-            }
-
-            var f = 0
-            while (f < self.fruits.length) {
-                board[self.fruits[f].X][self.fruits[f].Y] = 4
-                f = f + 1
             }
 
             return board
