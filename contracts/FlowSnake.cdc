@@ -4,14 +4,15 @@ import SimpleBoard from "./SimpleBoard.cdc"
 pub contract FlowSnake {
 
     pub event BoardUpdate(turn: UInt, board: [[UInt8]])
+    pub event GameResult(numPlayers: UInt8, moves: String)
 
     pub resource Game {
 
         pub var board: @SimpleBoard.Board
         pub var snakes: @[SimpleSnake.Snake]
 
-        init(boardSize: UInt8) {
-            self.board <- SimpleBoard.createBoard(size: boardSize)
+        init(boardSize: UInt8, fruitCount: UInt8) {
+            self.board <- SimpleBoard.createBoard(size: boardSize, fruitCount: fruitCount)
             self.snakes <- []
         }
 
@@ -28,16 +29,22 @@ pub contract FlowSnake {
 
             var i: UInt = 0
 
+            var moves = ""
+
             while(!finished) {
 
-                let move = self.snakes[currentPlayer].move(board: &self.board as &SimpleBoard.Board)
+                if i% 1 == 0 {
+                    emit BoardUpdate(turn: i, board: self.board.printBoard())
+                }
+
+                let move = self.snakes[currentPlayer].move(playerIndex: currentPlayer, board: &self.board as &SimpleBoard.Board)
+
+                moves = moves.concat(move)
 
                 self.board.processMove(currentPlayer, move)
 
-                emit BoardUpdate(turn: i, board: self.board.printBoard())
-
-                //finished = self.checkWin()
-                if i == 3 {
+                // finished = self.checkWin()
+                if i == 10 {
                     break
                 }
 
@@ -48,6 +55,8 @@ pub contract FlowSnake {
                     currentPlayer=0
                 }
             }
+
+            emit GameResult(numPlayers: UInt8(self.snakes.length), moves: moves)
 
         }
 
@@ -62,8 +71,8 @@ pub contract FlowSnake {
 
     }
 
-    pub fun createGame(boardSize: UInt8): @Game {
-        return <- create Game(boardSize: boardSize)
+    pub fun createGame(boardSize: UInt8, fruitCount: UInt8): @Game {
+        return <- create Game(boardSize: boardSize, fruitCount: fruitCount)
     }
 
 }
