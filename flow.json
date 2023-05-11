@@ -11,7 +11,8 @@
 		"SimpleRules": "./contracts/engine/SimpleRules.cdc",
 		"Util": "./contracts/engine/Util.cdc",
 		"SimpleModels": "./contracts/engine/SimpleModels.cdc",
-		"SimpleBoardMap": "./contracts/map/SimpleBoardMap.cdc"
+		"SimpleBoardMap10": "./contracts/map/SimpleBoardMap10.cdc",
+		"SimpleBoardMap30": "./contracts/map/SimpleBoardMap30.cdc"
 	},
 	"accounts": {
 		"emulator-account": {
@@ -35,7 +36,8 @@
 				"SimpleModels",
 				"SimpleRules",
 				"Util",
-				"SimpleBoardMap"
+				"SimpleBoardMap10",
+				"SimpleBoardMap30"
 			],
 			"emulator-gamer": [
 				"SimpleSnake"

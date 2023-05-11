@@ -1,11 +1,11 @@
 import FlowSnake from "../contracts/engine/FlowSnake.cdc"
 import SimpleSnake from "../contracts/SimpleSnake.cdc"
-import SimpleBoardMap from "../contracts/map/SimpleBoardMap.cdc"
+import SimpleBoardMap10 from "../contracts/map/SimpleBoardMap10.cdc"
 
 transaction(snakeCount: UInt8) {
     prepare(gamer: AuthAccount) {
 
-        let board = SimpleBoardMap.Board()
+        let board = SimpleBoardMap10.Board()
 
         let game <- FlowSnake.createGame(board: board)
 

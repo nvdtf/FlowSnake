@@ -1,7 +1,7 @@
 import SimpleModels from "../engine/SimpleModels.cdc"
 import Util from "../engine/Util.cdc"
 
-pub contract SimpleBoardMap {
+pub contract SimpleBoardMap10 {
 
     pub struct Board: SimpleModels.Board {
 

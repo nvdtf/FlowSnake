@@ -34,7 +34,7 @@ pub contract FlowSnake {
 
             var moves = ""
 
-            emit DebugBoard(turn: i, board: self.rules.debugPrintBoard())
+            // emit DebugBoard(turn: i, board: self.rules.debugPrintBoard())
 
             while(!finished) {
 
@@ -44,9 +44,9 @@ pub contract FlowSnake {
 
                 let moveResult = self.rules.processMove(currentPlayer, move)
 
-                if i% 10 == 0 {
-                    emit DebugBoard(turn: i, board: self.rules.debugPrintBoard())
-                }
+                // if i% 10 == 0 {
+                //     emit DebugBoard(turn: i, board: self.rules.debugPrintBoard())
+                // }
 
                 finished = moveResult == "E"
                 // if i == 100 {
