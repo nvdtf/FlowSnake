@@ -12,7 +12,7 @@
 		"Util": "./contracts/engine/Util.cdc",
 		"SimpleModels": "./contracts/engine/SimpleModels.cdc",
 		"SimpleBoardMap10": "./contracts/map/SimpleBoardMap10.cdc",
-		"SimpleBoardMap30": "./contracts/map/SimpleBoardMap30.cdc"
+		"SimpleBoardMap25": "./contracts/map/SimpleBoardMap25.cdc"
 	},
 	"accounts": {
 		"emulator-account": {
@@ -37,7 +37,7 @@
 				"SimpleRules",
 				"Util",
 				"SimpleBoardMap10",
-				"SimpleBoardMap30"
+				"SimpleBoardMap25"
 			],
 			"emulator-gamer": [
 				"SimpleSnake"

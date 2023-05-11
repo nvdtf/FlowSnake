@@ -1,7 +1,7 @@
 import SimpleModels from "../engine/SimpleModels.cdc"
 import Util from "../engine/Util.cdc"
 
-pub contract SimpleBoardMap30 {
+pub contract SimpleBoardMap25 {
 
     pub struct Board: SimpleModels.Board {
 
@@ -10,11 +10,11 @@ pub contract SimpleBoardMap30 {
         pub let fruits: {UInt8: Util.Coordination}
 
         init() {
-            self.size = 30
+            self.size = 25
             self.playerSpawn = {
                 0: [Util.Coordination(X: 1, Y: 1)],
                 1: [Util.Coordination(X: self.size - 2, Y: 1)],
-                2: [Util.Coordination(X: 1, Y: 8)],
+                2: [Util.Coordination(X: 1, Y: self.size - 2)],
                 3: [Util.Coordination(X: self.size - 2, Y: self.size - 2)]
             }
             self.fruits = {
@@ -28,11 +28,11 @@ pub contract SimpleBoardMap30 {
                 7: Util.Coordination(X: 21, Y: 3),
                 8: Util.Coordination(X: 14, Y: 6),
                 9: Util.Coordination(X: 3, Y: 20),
-                10: Util.Coordination(X: 13, Y: 28),
-                11: Util.Coordination(X: 23, Y: 19),
-                4: Util.Coordination(X: 29, Y: 8),
-                4: Util.Coordination(X: 11, Y: 6),
-                4: Util.Coordination(X: 26, Y: 26)
+                10: Util.Coordination(X: 13, Y: 22),
+                11: Util.Coordination(X: 23, Y: 5),
+                12: Util.Coordination(X: 9, Y: 8),
+                13: Util.Coordination(X: 11, Y: 6),
+                14: Util.Coordination(X: 21, Y: 21)
             }
         }
 

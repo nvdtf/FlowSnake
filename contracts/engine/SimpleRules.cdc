@@ -17,6 +17,10 @@ pub contract SimpleRules {
             return self.body[0]
         }
 
+        pub fun getTail(): Util.Coordination {
+            return self.body[self.body.length - 1]
+        }
+
         pub fun addToHead(cell: Util.Coordination) {
             self.body.insert(at: 0, cell)
         }
@@ -55,6 +59,9 @@ pub contract SimpleRules {
 
         pub fun registerPlayer(index: UInt8) {
             self.players.append(PlayerData(index: index, initialBody: self.board.getPlayerSpawns()[index]!))
+            for c in self.board.getPlayerSpawns()[index]! {
+                self.objects.insert(key: c.toString(), {"P": index})
+            }
         }
 
         pub fun processMove(_ playerIndex: UInt8, _ move: String): String {
@@ -77,13 +84,17 @@ pub contract SimpleRules {
                     self.objects.remove(key: newCell.toString())
                     fruitConsumed = true
 
+                } else if let o = i["P"] {
+                    return "E"
                 }
             }
 
             self.players[playerIndex].addToHead(cell: newCell)
+            self.objects.insert(key: newCell.toString(), {"P": playerIndex})
 
             if !fruitConsumed {
                 self.players[playerIndex].dropTail()
+                self.objects.remove(key: self.players[playerIndex].getTail().toString())
             }
 
             if self.checkEnd() {

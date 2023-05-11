@@ -54,7 +54,7 @@
         // Define your maps
         const maps = [
             {
-                name: 'SimpleBoardMap',
+                name: 'SimpleBoardMap10',
                 size: { x: 10, y: 10 },
                 fruitSpawns: [
                     { x: 0, y: 0 },
@@ -71,7 +71,33 @@
                     { x: 8, y: 8 },
                 ]
             },
-            // Add more maps as necessary
+            {
+                name: 'SimpleBoardMap25',
+                size: { x: 25, y: 25 },
+                fruitSpawns: [
+                    { x: 0, y: 0 },
+                    { x: 2, y: 2 },
+                    { x: 5, y: 5 },
+                    { x: 3, y: 2 },
+                    { x: 7, y: 1 },
+                    { x: 7, y: 8 },
+                    { x: 17, y: 11 },
+                    { x: 21, y: 3 },
+                    { x: 14, y: 6 },
+                    { x: 3, y: 20 },
+                    { x: 13, y: 22 },
+                    { x: 23, y: 5 },
+                    { x: 9, y: 8 },
+                    { x: 11, y: 6 },
+                    { x: 21, y: 21 }
+                ],
+                playerSpawns: [
+                    { x: 1, y: 1 },
+                    { x: 23, y: 1 },
+                    { x: 1, y: 23 },
+                    { x: 23, y: 23 },
+                ]
+            }
         ];
 
         // Get the select element
@@ -94,8 +120,8 @@
         };
 
         function drawMatrix() {
-            for (let i = 0; i < 10; i++) {
-                for (let j = 0; j < 10; j++) {
+            for (let i = 0; i < 25; i++) {
+                for (let j = 0; j < 25; j++) {
                     ctx.fillStyle = 'white';
                     ctx.fillRect(i * cellSize, j * cellSize, cellSize, cellSize);
                     ctx.strokeStyle = 'black';

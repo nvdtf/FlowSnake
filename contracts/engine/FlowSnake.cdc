@@ -61,6 +61,8 @@ pub contract FlowSnake {
                 }
             }
 
+            // emit DebugBoard(turn: i, board: self.rules.debugPrintBoard())
+
             emit GameResult(numPlayers: UInt8(self.snakes.length), moves: moves)
 
         }
