@@ -6,7 +6,7 @@
     <title>Snake Matrix</title>
     <style>
         canvas {
-            border: 1px solid black;
+            border: 0px solid black;
         }
     </style>
 </head>
@@ -38,7 +38,7 @@
     <div></div>
     <canvas id="matrixCanvas" width="200" height="200"></canvas>
     <script>
-        const cellSize = 40;
+        const cellSize = 10;
         const canvas = document.getElementById('matrixCanvas');
         const ctx = canvas.getContext('2d');
         const goButton = document.getElementById('goButton');
@@ -97,6 +97,68 @@
                     { x: 1, y: 23 },
                     { x: 23, y: 23 },
                 ]
+            },
+            {
+                name: 'SimpleBoardMap100',
+                size: { x: 100, y: 100 },
+                fruitSpawns: [
+                    {x: 30, y: 11},
+                    {x: 74, y: 63},
+                    {x: 90, y: 70},
+                    {x: 24, y: 92},
+                    {x: 92, y: 24},
+                    {x: 71, y: 38},
+                    {x: 45, y: 49},
+                    {x: 67, y: 85},
+                    {x: 4, y: 61},
+                    {x: 39, y: 8},
+                    {x: 15, y: 3},
+                    {x: 38, y: 22},
+                    {x: 14, y: 28},
+                    {x: 9, y: 19},
+                    {x: 69, y: 66},
+                    {x: 10, y: 0},
+                    {x: 17, y: 48},
+                    {x: 27, y: 13},
+                    {x: 62, y: 36},
+                    {x: 64, y: 1},
+                    {x: 1, y: 96},
+                    {x: 84, y: 27},
+                    {x: 46, y: 7},
+                    {x: 91, y: 87},
+                    {x: 28, y: 75},
+                    {x: 32, y: 16},
+                    {x: 37, y: 99},
+                    {x: 95, y: 88},
+                    {x: 22, y: 74},
+                    {x: 7, y: 17},
+                    {x: 29, y: 5},
+                    {x: 63, y: 55},
+                    {x: 55, y: 95},
+                    {x: 56, y: 44},
+                    {x: 44, y: 35},
+                    {x: 12, y: 34},
+                    {x: 85, y: 57},
+                    {x: 78, y: 4},
+                    {x: 58, y: 59},
+                    {x: 19, y: 51},
+                    {x: 52, y: 90},
+                    {x: 70, y: 42},
+                    {x: 96, y: 45},
+                    {x: 76, y: 9},
+                    {x: 75, y: 40},
+                    {x: 16, y: 41},
+                    {x: 93, y: 21},
+                    {x: 51, y: 56},
+                    {x: 11, y: 97},
+                    {x: 47, y: 81},
+                ],
+                playerSpawns: [
+                    { x: 1, y: 1 },
+                    { x: 98, y: 1 },
+                    { x: 1, y: 98 },
+                    { x: 98, y: 98 },
+                ]
             }
         ];
 
@@ -119,9 +181,30 @@
             'R': {x: 1, y: 0}
         };
 
-        function drawMatrix() {
-            for (let i = 0; i < 25; i++) {
-                for (let j = 0; j < 25; j++) {
+        function drawMatrix(boardSize) {
+            // Set the line color
+            ctx.strokeStyle = 'grey';
+
+            // Draw vertical lines
+            for(let i = 0; i <= boardSize.x; i++) {
+                ctx.beginPath();
+                ctx.moveTo(i * cellSize, 0);
+                ctx.lineTo(i * cellSize, boardSize.y * cellSize);
+                ctx.stroke();
+            }
+
+            // Draw horizontal lines
+            for(let j = 0; j <= boardSize.y; j++) {
+                ctx.beginPath();
+                ctx.moveTo(0, j * cellSize);
+                ctx.lineTo(boardSize.x * cellSize, j * cellSize);
+                ctx.stroke();
+            }
+        }
+
+        function __drawMatrix(boardSize) {
+            for (let i = 0; i < boardSize.x; i++) {
+                for (let j = 0; j < boardSize.y; j++) {
                     ctx.fillStyle = 'white';
                     ctx.fillRect(i * cellSize, j * cellSize, cellSize, cellSize);
                     ctx.strokeStyle = 'black';
@@ -129,8 +212,6 @@
                 }
             }
         }
-
-        drawMatrix();
 
         function drawSnake(snake, color) {
             ctx.fillStyle = color;
@@ -142,9 +223,14 @@
         }
 
         function drawFruit(coord) {
-            ctx.fillStyle = 'red';
-            ctx.font = `30px Arial`;
-            ctx.fillText('🍎', coord.x * cellSize + 5, (coord.y + 1) * cellSize - 10);
+            ctx.fillStyle = 'lime';
+            ctx.fillRect(coord.x * cellSize, coord.y * cellSize, cellSize, cellSize);
+            ctx.strokeStyle = 'black';
+            ctx.strokeRect(coord.x * cellSize, coord.y * cellSize, cellSize, cellSize);
+
+            // ctx.fillStyle = 'red';
+            // ctx.font = `30px Arial`;
+            // ctx.fillText('🍎', coord.x * cellSize + 5, (coord.y + 1) * cellSize - 10);
         }
 
 
@@ -177,14 +263,27 @@
             // Check for fruit collision before removing tail
             if (!checkFruitCollision(snake)) {
                 // If there was no fruit collision, remove the tail
-                snake.pop();
+                const oldTail = snake.pop();
+
+                // Clear the cell where the tail used to be
+                clearCell(oldTail);
             }
 
             return snake;
         }
 
+        function clearCell(coord) {
+            // Set fill color to white
+            ctx.fillStyle = 'white';
+
+            // Draw a rectangle in the specified cell
+            ctx.fillRect(coord.x * cellSize, coord.y * cellSize, cellSize, cellSize);
+
+            ctx.strokeStyle = 'grey';
+            ctx.strokeRect(coord.x * cellSize, coord.y * cellSize, cellSize, cellSize);
+        }
+
         function render() {
-            drawMatrix();
             const colors = ['green', 'blue', 'red', 'yellow'];
             snakes.forEach((snake, index) => {
                 drawSnake(snake, colors[index]);
@@ -207,7 +306,7 @@
         }
 
         function startAnimation() {
-             // Get the selected map
+            // Get the selected map
             const map = maps[parseInt(mapSelect.value)];
 
             // Use the map size
@@ -237,9 +336,12 @@
             canvas.width = boardSize.x * cellSize;
             canvas.height = boardSize.y * cellSize;
 
+            // Draw the matrix once at the start of the animation
+            __drawMatrix(boardSize);
+
             movementIndex = 0;
             render();
-            movementInterval = setInterval(moveSnakes, 100);
+            movementInterval = setInterval(moveSnakes, 10);
         }
 
 
