@@ -6,9 +6,12 @@
 		"testnet": "access.devnet.nodes.onflow.org:9000"
 	},
 	"contracts": {
-		"FlowSnake": "./contracts/FlowSnake.cdc",
 		"SimpleSnake": "./contracts/SimpleSnake.cdc",
-		"SimpleBoard": "./contracts/SimpleBoard.cdc"
+		"FlowSnake": "./contracts/engine/FlowSnake.cdc",
+		"SimpleRules": "./contracts/engine/SimpleRules.cdc",
+		"Util": "./contracts/engine/Util.cdc",
+		"SimpleModels": "./contracts/engine/SimpleModels.cdc",
+		"SimpleBoardMap": "./contracts/map/SimpleBoardMap.cdc"
 	},
 	"accounts": {
 		"emulator-account": {
@@ -28,11 +31,15 @@
 		"emulator" : {
 			"emulator-account": [],
 			"emulator-flowsnake": [
-				"SimpleSnake",
-				"SimpleBoard",
-				"FlowSnake"
+				"FlowSnake",
+				"SimpleModels",
+				"SimpleRules",
+				"Util",
+				"SimpleBoardMap"
 			],
-			"emulator-gamer": []
+			"emulator-gamer": [
+				"SimpleSnake"
+			]
 		}
 	}
 }

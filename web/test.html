@@ -12,6 +12,12 @@
 </head>
 <body>
     <div>
+        <label for="maps">Select a map:</label>
+        <select id="maps">
+            <!-- The options will be populated dynamically from JavaScript -->
+        </select>
+    </div>
+    <div>
         <label for="numSnakes">Number of snakes:</label>
         <select id="numSnakes">
             <option value="1">1</option>
@@ -28,26 +34,57 @@
         <label for="moves">Moves:</label>
         <input type="text" id="moves" placeholder="Enter moves (L, R, U, D)">
     </div>
-    <div>
-        <label for="boardSize">Board size:</label>
-        <input type="text" id="boardSize" value="10x10" placeholder="Enter board size (e.g. 10x10)">
-    </div>
     <button id="goButton">Go!</button>
+    <div></div>
     <canvas id="matrixCanvas" width="200" height="200"></canvas>
     <script>
-        const cellSize = 20;
+        const cellSize = 40;
         const canvas = document.getElementById('matrixCanvas');
         const ctx = canvas.getContext('2d');
         const goButton = document.getElementById('goButton');
         const numSnakesInput = document.getElementById('numSnakes');
         const movesInput = document.getElementById('moves');
-        const boardSizeInput = document.getElementById('boardSize');
 
+        let fruits = [];
         let snakes = [];
         let snakeMovements = [];
         let movementInterval = null;
         let movementIndex = 0;
-        let boardSize = {x: 10, y: 10};
+
+        // Define your maps
+        const maps = [
+            {
+                name: 'SimpleBoardMap',
+                size: { x: 10, y: 10 },
+                fruitSpawns: [
+                    { x: 0, y: 0 },
+                    { x: 2, y: 2 },
+                    { x: 5, y: 5 },
+                    { x: 3, y: 2 },
+                    { x: 7, y: 1 },
+                    { x: 7, y: 8 }
+                ],
+                playerSpawns: [
+                    { x: 1, y: 1 },
+                    { x: 8, y: 1 },
+                    { x: 1, y: 8 },
+                    { x: 8, y: 8 },
+                ]
+            },
+            // Add more maps as necessary
+        ];
+
+        // Get the select element
+        const mapSelect = document.getElementById('maps');
+
+        // Populate the select element with the map names
+        maps.forEach((map, index) => {
+            const option = document.createElement('option');
+            option.value = index;
+            option.textContent = map.name;
+            mapSelect.appendChild(option);
+        });
+
 
         const directions = {
             'U': {x: 0, y: -1},
@@ -57,8 +94,8 @@
         };
 
         function drawMatrix() {
-            for (let i = 0; i < boardSize.x; i++) {
-                for (let j = 0; j < boardSize.y; j++) {
+            for (let i = 0; i < 10; i++) {
+                for (let j = 0; j < 10; j++) {
                     ctx.fillStyle = 'white';
                     ctx.fillRect(i * cellSize, j * cellSize, cellSize, cellSize);
                     ctx.strokeStyle = 'black';
@@ -78,22 +115,46 @@
             }
         }
 
-        function moveSnake(snake, movement) {
-            const newHead = {
-                x: snake[0].x + movement.x,
-                y: snake[0].y + movement.y
-            };
+        function drawFruit(coord) {
+            ctx.fillStyle = 'red';
+            ctx.font = `30px Arial`;
+            ctx.fillText('🍎', coord.x * cellSize + 5, (coord.y + 1) * cellSize - 10);
+        }
 
-            // Check if the new head position is within the matrix bounds
-            if (newHead.x < 0 || newHead.y < 0 || newHead.x >= boardSize.x || newHead.y >= boardSize.y) {
-                return snake;
+
+        function checkFruitCollision(snake) {
+            const head = snake[0];
+            for (let i = 0; i < fruits.length; i++) {
+                if (fruits[i].x === head.x && fruits[i].y === head.y) {
+                    // Remove the fruit
+                    fruits.splice(i, 1);
+
+                    // Return true to indicate a fruit collision
+                    return true;
+                }
             }
 
-            // Remove the last cell of the snake
-            const newSnake = snake.slice(0, -1);
-            // Add the new head to the front of the snake
-            newSnake.unshift(newHead);
-            return newSnake;
+            // Return false if there was no fruit collision
+            return false;
+        }
+
+        function moveSnake(snake, direction) {
+            // Create new head based on the direction
+            const newHead = {
+                x: (snake[0].x + direction.x + boardSize.x) % boardSize.x,
+                y: (snake[0].y + direction.y + boardSize.y) % boardSize.y,
+            };
+
+            // Add the new head to the snake body
+            snake.unshift(newHead);
+
+            // Check for fruit collision before removing tail
+            if (!checkFruitCollision(snake)) {
+                // If there was no fruit collision, remove the tail
+                snake.pop();
+            }
+
+            return snake;
         }
 
         function render() {
@@ -102,12 +163,16 @@
             snakes.forEach((snake, index) => {
                 drawSnake(snake, colors[index]);
             });
+            fruits.forEach(fruit => {
+                drawFruit(fruit);
+            });
         }
 
         function moveSnakes() {
             if (movementIndex < snakeMovements.length) {
                 const move = snakeMovements[movementIndex];
                 snakes[move.snake] = moveSnake(snakes[move.snake], move.movement);
+                checkFruitCollision(snakes[move.snake]);
                 render();
                 movementIndex++;
             } else {
@@ -116,36 +181,25 @@
         }
 
         function startAnimation() {
-            const numSnakes = parseInt(numSnakesInput.value);
-            const moves = movesInput.value.split('');
-            const [boardWidth, boardHeight] = boardSizeInput.value.split('x').map(Number);
-            boardSize = {x: boardWidth, y: boardHeight};
+             // Get the selected map
+            const map = maps[parseInt(mapSelect.value)];
 
-            // Create the snakes
+            // Use the map size
+            boardSize = map.size;
+
+            // Use the map fruit spawns
+            fruits = [...map.fruitSpawns];
+
+            // Use the map player spawns to create the snakes
+            const numSnakes = parseInt(numSnakesInput.value);
             snakes = [];
-            const border = 1;
             for (let i = 0; i < numSnakes; i++) {
-                let headPos = {x: 0, y: 0};
-                if (i === 0) {
-                    headPos = {x: border, y: border};
-                } else if (i === 1) {
-                    headPos = {x: boardSize.x - 1 - border, y: border};
-                } else if (i === 2) {
-                    headPos = {x: boardSize.x - 1 - border, y: boardSize.y - 1 - border};
-                } else if (i === 3) {
-                    headPos = {x: border, y: boardSize.y - 1 - border};
-                } else if (i === 4) {
-                    headPos = {x: Math.floor(boardSize.x / 2), y: border};
-                } else if (i === 5) {
-                    headPos = {x: border, y: Math.floor(boardSize.y / 2)};
-                } else if (i === 6) {
-                    headPos = {x: Math.floor(boardSize.x / 2), y: boardSize.y - 1 - border};
-                } else if (i === 7) {
-                    headPos = {x: boardSize.x - 1 - border, y: Math.floor(boardSize.y / 2)};
-                }
-                const snake = [headPos];
-                snakes.push(snake);
+                snakes.push([
+                    Object.assign({}, map.playerSpawns[i]), // Head
+                ]);
             }
+
+            const moves = movesInput.value.split('');
 
             // Create the movements
             snakeMovements = [];
@@ -154,12 +208,12 @@
                 snakeMovements.push(movement);
             }
 
-            canvas.width = boardWidth * cellSize;
-            canvas.height = boardHeight * cellSize;
+            canvas.width = boardSize.x * cellSize;
+            canvas.height = boardSize.y * cellSize;
 
             movementIndex = 0;
             render();
-            movementInterval = setInterval(moveSnakes, 1000);
+            movementInterval = setInterval(moveSnakes, 100);
         }
 
 

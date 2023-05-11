@@ -1,20 +1,22 @@
-import FlowSnake from "../contracts/FlowSnake.cdc"
+import FlowSnake from "../contracts/engine/FlowSnake.cdc"
 import SimpleSnake from "../contracts/SimpleSnake.cdc"
+import SimpleBoardMap from "../contracts/map/SimpleBoardMap.cdc"
 
-transaction {
+transaction(snakeCount: UInt8) {
     prepare(gamer: AuthAccount) {
 
-        let game <- FlowSnake.createGame(boardSize: 10, fruitCount: 3)
+        let board = SimpleBoardMap.Board()
 
-        let snake1 <- SimpleSnake.createSnake()
-        let snake2 <- SimpleSnake.createSnake()
-        let snake3 <- SimpleSnake.createSnake()
-        let snake4 <- SimpleSnake.createSnake()
+        let game <- FlowSnake.createGame(board: board)
 
-        game.addSnake(<-snake1)
-        game.addSnake(<-snake2)
-        game.addSnake(<-snake3)
-        game.addSnake(<-snake4)
+        var i: UInt8 = 0
+        while (i < snakeCount) {
+            let snake <- SimpleSnake.createSnake()
+            game.addSnake(<-snake)
+            i = i + 1
+        }
+
+
 
         game.start()
 

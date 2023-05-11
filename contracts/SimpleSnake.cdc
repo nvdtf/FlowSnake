@@ -1,33 +1,26 @@
-import SimpleBoard from "./SimpleBoard.cdc"
+import SimpleRules from "./engine/SimpleRules.cdc"
+import Util from "./engine/Util.cdc"
 
 pub contract SimpleSnake {
 
-    pub event Log(what: String)
-
     pub resource Snake {
 
-        init() {
+        pub fun move(playerIndex: UInt8, game: &SimpleRules.Rules): String {
 
-        }
+            let myHead = game.players[playerIndex].getHead()
 
-        pub fun move(playerIndex: UInt8, board: &SimpleBoard.Board): String {
+            let boardSize = game.board.getSize()
 
-            let myHead = board.players[playerIndex].headPos
+            let boardPrinted = game.debugPrintBoard()
 
-            let boardSize = board.size
-
-            let boardPrinted = board.printBoard()
-
-            var targetCell = SimpleBoard.Coordination(X: 0, Y: 0)
+            var targetCell = Util.Coordination(X: 0, Y: 0)
 
             var minDistance: UInt8 = 255
-            for fruit in board.fruits {
+            for k in game.fruits.keys {
+                let fruit = game.fruits[k]!
                 let d = self.calculateDistance(a: myHead, b: fruit)
                 if d < minDistance {
                     targetCell = fruit
-
-                    emit Log(what: targetCell.X.toString())
-                    emit Log(what: targetCell.Y.toString())
                     minDistance = d
                 }
             }
@@ -45,7 +38,7 @@ pub contract SimpleSnake {
             return "?"
         }
 
-        pub fun calculateDistance(a: SimpleBoard.Coordination, b: SimpleBoard.Coordination): UInt8 {
+        pub fun calculateDistance(a: Util.Coordination, b: Util.Coordination): UInt8 {
             var Xd: UInt8 = 0
             if a.X > b.X {
                 Xd = a.X - b.X

@@ -16,6 +16,7 @@ func TestNewGame(t *testing.T) {
 	o.Tx(
 		"new_game",
 		overflow.WithSigner("gamer"),
+		overflow.WithArg("snakeCount", 1),
 	).Print()
 
 	t.Fail()
