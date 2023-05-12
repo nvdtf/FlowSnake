@@ -1,20 +1,20 @@
 {
+	"contracts": {
+		"FlowSnake": "./contracts/engine/FlowSnake.cdc",
+		"SimpleBoardMap10": "./contracts/map/SimpleBoardMap10.cdc",
+		"SimpleBoardMap100": "./contracts/map/SimpleBoardMap100.cdc",
+		"SimpleBoardMap25": "./contracts/map/SimpleBoardMap25.cdc",
+		"SimpleBoardMap50": "./contracts/map/SimpleBoardMap50.cdc",
+		"SimpleModels": "./contracts/engine/SimpleModels.cdc",
+		"SimpleRules": "./contracts/engine/SimpleRules.cdc",
+		"SimpleSnake": "./contracts/SimpleSnake.cdc",
+		"Util": "./contracts/engine/Util.cdc"
+	},
 	"networks": {
 		"emulator": "127.0.0.1:3569",
 		"mainnet": "access.mainnet.nodes.onflow.org:9000",
 		"sandboxnet": "access.sandboxnet.nodes.onflow.org:9000",
 		"testnet": "access.devnet.nodes.onflow.org:9000"
-	},
-	"contracts": {
-		"SimpleSnake": "./contracts/SimpleSnake.cdc",
-		"FlowSnake": "./contracts/engine/FlowSnake.cdc",
-		"SimpleRules": "./contracts/engine/SimpleRules.cdc",
-		"Util": "./contracts/engine/Util.cdc",
-		"SimpleModels": "./contracts/engine/SimpleModels.cdc",
-		"SimpleBoardMap10": "./contracts/map/SimpleBoardMap10.cdc",
-		"SimpleBoardMap25": "./contracts/map/SimpleBoardMap25.cdc",
-		"SimpleBoardMap100": "./contracts/map/SimpleBoardMap100.cdc",
-		"SimpleBoardMap50": "./contracts/map/SimpleBoardMap50.cdc"
 	},
 	"accounts": {
 		"emulator-account": {
@@ -28,10 +28,24 @@
 		"emulator-gamer": {
 			"address": "179b6b1cb6755e31",
 			"key": "b35cd93de7d0eef6b2c23ef6e6f0b2432d20ab72691e3171258e9e8e14251dd0"
+		},
+		"testnet-flowsnake": {
+			"address": "769c4c19b0996697",
+			"key": {
+				"type": "file",
+				"location": "testnet-flowsnake.pkey"
+			}
+		},
+		"testnet-gamer": {
+			"address": "8f85a26ef4e21200",
+			"key": {
+				"type": "file",
+				"location": "testnet-gamer.pkey"
+			}
 		}
 	},
 	"deployments": {
-		"emulator" : {
+		"emulator": {
 			"emulator-account": [],
 			"emulator-flowsnake": [
 				"FlowSnake",
@@ -44,6 +58,21 @@
 				"SimpleBoardMap50"
 			],
 			"emulator-gamer": [
+				"SimpleSnake"
+			]
+		},
+		"testnet": {
+			"testnet-flowsnake": [
+				"FlowSnake",
+				"SimpleModels",
+				"SimpleRules",
+				"Util",
+				"SimpleBoardMap10",
+				"SimpleBoardMap25",
+				"SimpleBoardMap100",
+				"SimpleBoardMap50"
+			],
+			"testnet-gamer": [
 				"SimpleSnake"
 			]
 		}

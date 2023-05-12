@@ -35,7 +35,7 @@ pub contract SimpleSnake {
 
             let moves = "RLDU"
 
-            var i = -1
+            var i = 0
             if targetCell.X > myHead.X {
                 i = 0
             } else if targetCell.X < myHead.X {
