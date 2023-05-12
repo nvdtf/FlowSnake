@@ -16,8 +16,6 @@ transaction(snakeCount: UInt8) {
             i = i + 1
         }
 
-
-
         game.start()
 
         destroy game
