@@ -1,6 +1,8 @@
 import SimpleRules from "./engine/SimpleRules.cdc"
 import Util from "./engine/Util.cdc"
 
+// SimpleSnake calculates distance to all fruits and targets the closest one
+// It will try to move closer to the target prioritizing R
 pub contract SimpleSnake {
 
     pub resource Snake {

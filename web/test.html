@@ -6,7 +6,7 @@
     <title>Snake Matrix</title>
     <style>
         canvas {
-            border: 0px solid black;
+            border: 1px solid black;
         }
     </style>
 </head>
@@ -35,7 +35,7 @@
         <input type="text" id="moves" placeholder="Enter moves (L, R, U, D)">
     </div>
     <button id="goButton">Go!</button>
-    <div></div>
+    <div></div><br/>
     <canvas id="matrixCanvas" width="200" height="200"></canvas>
     <script>
         const cellSize = 10;
@@ -96,6 +96,68 @@
                     { x: 23, y: 1 },
                     { x: 1, y: 23 },
                     { x: 23, y: 23 },
+                ]
+            },
+            {
+                name: 'SimpleBoardMap50',
+                size: { x: 50, y: 50 },
+                fruitSpawns: [
+                    {x: 9, y: 25},
+                    {x: 5, y: 19},
+                    {x: 33, y: 41},
+                    {x: 23, y: 3},
+                    {x: 14, y: 4},
+                    {x: 17, y: 23},
+                    {x: 28, y: 22},
+                    {x: 38, y: 9},
+                    {x: 8, y: 15},
+                    {x: 36, y: 10},
+                    {x: 4, y: 39},
+                    {x: 12, y: 40},
+                    {x: 46, y: 49},
+                    {x: 29, y: 48},
+                    {x: 15, y: 8},
+                    {x: 18, y: 37},
+                    {x: 30, y: 46},
+                    {x: 32, y: 44},
+                    {x: 44, y: 35},
+                    {x: 11, y: 31},
+                    {x: 48, y: 45},
+                    {x: 27, y: 43},
+                    {x: 31, y: 27},
+                    {x: 24, y: 12},
+                    {x: 22, y: 13},
+                    {x: 1, y: 6},
+                    {x: 6, y: 21},
+                    {x: 41, y: 20},
+                    {x: 45, y: 33},
+                    {x: 21, y: 34},
+                    {x: 42, y: 14},
+                    {x: 39, y: 30},
+                    {x: 37, y: 42},
+                    {x: 16, y: 17},
+                    {x: 34, y: 2},
+                    {x: 26, y: 24},
+                    {x: 40, y: 28},
+                    {x: 35, y: 16},
+                    {x: 7, y: 11},
+                    {x: 13, y: 32},
+                    {x: 19, y: 29},
+                    {x: 47, y: 36},
+                    {x: 2, y: 38},
+                    {x: 3, y: 5},
+                    {x: 49, y: 0},
+                    {x: 10, y: 7},
+                    {x: 25, y: 18},
+                    {x: 20, y: 47},
+                    {x: 0, y: 26},
+                    {x: 43, y: 1},
+                ],
+                playerSpawns: [
+                    { x: 1, y: 1 },
+                    { x: 48, y: 1 },
+                    { x: 1, y: 48 },
+                    { x: 48, y: 48 },
                 ]
             },
             {
@@ -183,7 +245,7 @@
 
         function drawMatrix(boardSize) {
             // Set the line color
-            ctx.strokeStyle = 'grey';
+            ctx.strokeStyle = 'black';
 
             // Draw vertical lines
             for(let i = 0; i <= boardSize.x; i++) {
@@ -217,16 +279,16 @@
             ctx.fillStyle = color;
             for (const cell of snake) {
                 ctx.fillRect(cell.x * cellSize, cell.y * cellSize, cellSize, cellSize);
-                ctx.strokeStyle = 'black';
-                ctx.strokeRect(cell.x * cellSize, cell.y * cellSize, cellSize, cellSize);
+                //ctx.strokeStyle = 'black';
+                //ctx.strokeRect(cell.x * cellSize, cell.y * cellSize, cellSize, cellSize);
             }
         }
 
         function drawFruit(coord) {
             ctx.fillStyle = 'lime';
             ctx.fillRect(coord.x * cellSize, coord.y * cellSize, cellSize, cellSize);
-            ctx.strokeStyle = 'black';
-            ctx.strokeRect(coord.x * cellSize, coord.y * cellSize, cellSize, cellSize);
+            //ctx.strokeStyle = 'black';
+            //ctx.strokeRect(coord.x * cellSize, coord.y * cellSize, cellSize, cellSize);
 
             // ctx.fillStyle = 'red';
             // ctx.font = `30px Arial`;
@@ -279,7 +341,7 @@
             // Draw a rectangle in the specified cell
             ctx.fillRect(coord.x * cellSize, coord.y * cellSize, cellSize, cellSize);
 
-            ctx.strokeStyle = 'grey';
+            ctx.strokeStyle = 'black';
             ctx.strokeRect(coord.x * cellSize, coord.y * cellSize, cellSize, cellSize);
         }
 

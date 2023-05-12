@@ -5,7 +5,7 @@ import Util from "./Util.cdc"
 
 pub contract FlowSnake {
 
-    pub event GameResult(numPlayers: UInt8, moves: String)
+    pub event GameResult(numPlayers: UInt8, turns: UInt, moves: String)
 
     pub event DebugBoard(turn: UInt, board: [[UInt8]])
 
@@ -63,7 +63,7 @@ pub contract FlowSnake {
 
             // emit DebugBoard(turn: i, board: self.rules.debugPrintBoard())
 
-            emit GameResult(numPlayers: UInt8(self.snakes.length), moves: moves)
+            emit GameResult(numPlayers: UInt8(self.snakes.length), turns: i, moves: moves)
 
         }
 
